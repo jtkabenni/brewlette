@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const axios = require("axios");
-const api = process.env.REACT_APP_GOOGLE_API;
-
+require("dotenv").config();
+const api = process.env.GOOGLE_API;
+console.log(process.env);
 app.use(cors());
 app.use(express.json());
 
@@ -25,7 +26,7 @@ app.get("/api/google-maps", async (req, res) => {
         location: location,
       },
     });
-    // console.log(response.data);
+    console.log(response.data);
     return res.json(response.data);
     // return res.json(response);
   } catch (error) {
