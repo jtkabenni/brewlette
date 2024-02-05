@@ -1,5 +1,4 @@
 export const neighborhoods = [
-  "Financial District",
   "Bath Beach",
   "Allerton",
   "Battery Park City",
