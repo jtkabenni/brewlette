@@ -22,7 +22,7 @@ app.get("/api/coordinates", async (req, res) => {
         key: api,
       },
     });
-    console.log(response.data);
+
     return res.json(response.data);
   } catch (e) {
     console.error(e);
@@ -43,7 +43,26 @@ app.get("/api/google-maps", async (req, res) => {
         location: location,
       },
     });
-    console.log(response.data);
+
+    return res.json(response.data);
+    // return res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/api/cafe", async (req, res) => {
+  console.log("reached this route", req.query);
+  try {
+    const apiUrl = "https://maps.googleapis.com/maps/api/place/details/json";
+    const response = await axios.get(apiUrl, {
+      params: {
+        key: api,
+        place_id: req.query.place_id,
+      },
+    });
+
     return res.json(response.data);
     // return res.json(response);
   } catch (error) {
