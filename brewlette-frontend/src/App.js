@@ -1,3 +1,4 @@
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import logo from "./logo.png";
 import home from "./home.png";
 import replay from "./replay.png";
@@ -13,30 +14,40 @@ function App() {
   const [count, setCount] = useState(0);
   const [coords, setCoords] = useState("");
   const [cafes, setCafes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [cafe, setCafe] = useState({});
+  const [loaded, setLoaded] = useState(false);
+  const [cafe, setCafe] = useState(null);
+
+  //when coordinates change, get cafes
+  useEffect(() => {
+    async function fetch() {
+      await getCafes();
+    }
+    fetch();
+  }, [coords]);
 
   useEffect(() => {
-    // This effect will run whenever coords changes
-    if (coords) {
-      getCafes(coords);
+    async function fetch() {
+      if (count === 0) {
+        await getCafeDetails();
+      }
     }
-  }, [coords]);
+    fetch();
+  }, [cafes]);
 
   useEffect(() => {
     getCafeDetails();
   }, [count]);
 
   function searchNeighborhoods(e) {
+    if (e.target.value === "") {
+      setFilteredNeighborhoods([]);
+      return;
+    }
     const inputValue = e.target.value.toLowerCase();
     const filtered = neighborhoods.filter((n) =>
       n.toLowerCase().includes(inputValue)
     );
-    if (e.target.value === "") {
-      setFilteredNeighborhoods([]);
-    } else {
-      setFilteredNeighborhoods(filtered);
-    }
+    setFilteredNeighborhoods(filtered);
   }
 
   function selectNeighborhood(e) {
@@ -63,27 +74,24 @@ function App() {
   }
 
   function restart() {
+    setCoords("");
+    setCafe(null);
     setNeighborhood("");
-    setFilteredNeighborhoods([]);
-    setCafes([]);
   }
 
-  async function getCafes(coordinates) {
-    if (coordinates) {
-      setIsLoading(true);
+  async function getCafes() {
+    if (coords) {
       try {
         const res = await axios.get(`${base_url}/api/google-maps`, {
           params: {
             nbh: neighborhood,
             type: "cafe",
             radius: 1000,
-            location: coordinates,
+            location: coords,
           },
         });
-        setIsLoading(false);
         setCafes(res.data.results);
-
-        console.log(res.data.results);
+        return res.data.results;
       } catch (e) {
         console.log("error :(", e);
       }
@@ -97,16 +105,16 @@ function App() {
           place_id: cafes[count].place_id,
         },
       });
-
-      console.log(res.data.result);
       setCafe(res.data.result);
-    } catch (e) {}
+    } catch (e) {
+      console.log("error :(", e);
+    }
   }
 
   return (
     <div className="bg-peach h-screen flex flex-col justify-center items-center">
       <img src={logo} style={{ width: "200px" }} />
-      {!cafes.length ? (
+      {!cafe ? (
         <>
           <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/2 m-6 p-6 rounded-lg">
             <h2 className="text-purple text-2xl font-luckiest">
@@ -114,7 +122,7 @@ function App() {
             </h2>
             <div>
               <input type="checkbox" id="no-preference" name="no-preference" />
-              <label for="no-preference">I have no preference</label>
+              <label htmlFor="no-preference">I have no preference</label>
             </div>
             <br></br>
             <input
@@ -162,11 +170,13 @@ function App() {
               <img src={replay} />
             </button>
           </div>
-          <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/3 m-6 p-6 rounded-lg"></div>
+          <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/3 m-6 p-6 rounded-lg">
+            <p>{cafe.url}</p>
+          </div>
           <div className="flex items-center justify-between w-1/2">
             <div>
-              <p>{cafes[count].name}</p>
-              <p>{cafes[count].vicinity}</p>
+              <p>{cafe.name}</p>
+              <p>{cafe.vicinity}</p>
             </div>
             <button className="bg-purple font-white p-3 rounded-lg font-luckiest">
               <a href={cafe.url} target="_blank">
