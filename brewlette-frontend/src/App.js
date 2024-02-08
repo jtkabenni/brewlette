@@ -1,4 +1,4 @@
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import Cafe from "./components/Cafe";
 import logo from "./logo.png";
 import home from "./home.png";
 import replay from "./replay.png";
@@ -170,20 +170,7 @@ function App() {
               <img src={replay} />
             </button>
           </div>
-          <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/3 m-6 p-6 rounded-lg">
-            <p>{cafe.url}</p>
-          </div>
-          <div className="flex items-center justify-between w-1/2">
-            <div>
-              <p>{cafe.name}</p>
-              <p>{cafe.vicinity}</p>
-            </div>
-            <button className="bg-purple font-white p-3 rounded-lg font-luckiest">
-              <a href={cafe.url} target="_blank">
-                Let's go!
-              </a>
-            </button>
-          </div>
+          <Cafe cafe={cafe} />
         </>
       )}
     </div>
