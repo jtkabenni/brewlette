@@ -69,7 +69,7 @@ function App() {
         return null;
       }
     } catch (error) {
-      console.log("error :(", error);
+      console.error("error :(", error);
     }
   }
 
@@ -93,7 +93,7 @@ function App() {
         setCafes(res.data.results);
         return res.data.results;
       } catch (e) {
-        console.log("error :(", e);
+        console.error("error :(", e);
       }
     }
   }
@@ -107,7 +107,7 @@ function App() {
       });
       setCafe(res.data.result);
     } catch (e) {
-      console.log("error :(", e);
+      console.error("error :(", e);
     }
   }
 
@@ -120,10 +120,10 @@ function App() {
             <h2 className="text-purple text-2xl font-luckiest">
               WHICH NEIGHBORHOOD?
             </h2>
-            <div>
+            {/* <div>
               <input type="checkbox" id="no-preference" name="no-preference" />
               <label htmlFor="no-preference">I have no preference</label>
-            </div>
+            </div> */}
             <br></br>
             <input
               className="p-3 w-1/3"

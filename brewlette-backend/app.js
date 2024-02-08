@@ -12,7 +12,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/coordinates", async (req, res) => {
-  console.log("reached this route", req.query);
   const { address } = req.query;
   try {
     const apiUrl = "https://maps.googleapis.com/maps/api/geocode/json";
@@ -30,7 +29,6 @@ app.get("/api/coordinates", async (req, res) => {
 });
 
 app.get("/api/google-maps", async (req, res) => {
-  console.log("reached this route", req.query);
   const { type, radius, location } = req.query;
   try {
     const apiUrl =
@@ -53,7 +51,6 @@ app.get("/api/google-maps", async (req, res) => {
 });
 
 app.get("/api/cafe", async (req, res) => {
-  console.log("reached this route", req.query);
   try {
     const apiUrl = "https://maps.googleapis.com/maps/api/place/details/json";
     const response = await axios.get(apiUrl, {
