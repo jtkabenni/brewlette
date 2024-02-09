@@ -1,10 +1,11 @@
-export function Search({
+import React, { useState } from "react";
+function Search({
   neighborhood,
   filteredNeighborhoods,
   setNeighborhood,
   selectNeighborhood,
   searchNeighborhoods,
-  getCoordinates,
+  search,
 }) {
   return (
     <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/2 m-6 p-6 rounded-lg">
@@ -37,10 +38,12 @@ export function Search({
       ))}
       <button
         className="bg-purple p-3 text-2xl text-white rounded-lg font-luckiest"
-        onClick={getCoordinates}
+        onClick={() => search(neighborhood)}
       >
         FIND A CAFE!
       </button>
     </div>
   );
 }
+
+export default Search;

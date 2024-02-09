@@ -1,12 +1,11 @@
 import Cafe from "./components/Cafe";
 import Logo from "./components/Logo";
 import CafeMenu from "./components/CafeMenu";
-import { Search } from "./components/Search";
+import Search from "./components/Search";
+import { getCoordinates, getCafes, getCafeDetails } from "./api/api";
 import "./App.css";
 import { neighborhoods } from "./neighborhoods";
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
-const base_url = "http://localhost:3001";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState("");
@@ -18,41 +17,51 @@ function App() {
 
   //when coordinates change, fetch cafes, and get details for first cafe
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cs = await getCafes();
-        setCafes(cs);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    console.log("coords changed");
-    fetchData();
+    if (coords != "") {
+      const fetchData = async () => {
+        try {
+          const cs = await getCafes({ neighborhood, coords });
+          console.log("cafes:", cs);
+          setCafes(cs);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      console.log("coordinates changed");
+      fetchData();
+      return;
+    }
   }, [coords]);
 
+  //every time cafes change, fetch the details for first cafe on the list
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const c = await getCafeDetails();
-        setCafe(c);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    console.log("coords changed");
-    fetchData();
+    if (cafes.length > 0) {
+      const fetchData = async () => {
+        try {
+          const c = await getCafeDetails(cafes[count].place_id);
+          setCafe(c);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      // Check if it's not the initial load
+      console.log(count);
+      fetchData();
+      return;
+    }
   }, [cafes]);
 
-  // every time count changes, fetch cafe details
+  // every time count changes, fetch cafe details for cafe of current count
   useEffect(() => {
-    const fetchData = async () => {
-      console.log("getting cafe deets....");
-
-      const c = await getCafeDetails();
-      setCafe(c);
-    };
-    fetchData();
+    if (count > 0) {
+      const fetchData = async () => {
+        console.log("getting cafe deets....");
+        const c = await getCafeDetails(cafes[count].place_id);
+        setCafe(c);
+      };
+      console.log(count);
+      fetchData();
+    }
   }, [count]);
 
   function searchNeighborhoods(e) {
@@ -72,59 +81,15 @@ function App() {
     setFilteredNeighborhoods([]);
   }
 
-  async function getCoordinates() {
-    try {
-      const res = await axios.get(`${base_url}/api/coordinates`, {
-        params: {
-          address: `${neighborhood}, NY`,
-        },
-      });
-      if (res.data.results.length > 0) {
-        const location = res.data.results[0].geometry.location;
-        setCoords(`${location.lat},${location.lng}`);
-      } else {
-        return null;
-      }
-    } catch (error) {
-      console.error("error :(", error);
-    }
+  async function search(neighborhood) {
+    const coords = await getCoordinates(neighborhood);
+    setCoords(coords);
   }
 
   function restart() {
     setCoords("");
     setCafe(null);
     setNeighborhood("");
-  }
-
-  async function getCafes() {
-    try {
-      const res = await axios.get(`${base_url}/api/google-maps`, {
-        params: {
-          nbh: neighborhood,
-          type: "cafe",
-          radius: 1000,
-          location: coords,
-        },
-      });
-
-      return res.data.results;
-    } catch (e) {
-      console.error("error :(", e);
-    }
-  }
-
-  async function getCafeDetails() {
-    try {
-      console.log("cafe deets:", count, cafes, cafes[count]);
-      const res = await axios.get(`${base_url}/api/cafe`, {
-        params: {
-          place_id: cafes[count].place_id,
-        },
-      });
-      return res.data.result;
-    } catch (e) {
-      console.error("error :(", e);
-    }
   }
 
   return (
@@ -138,7 +103,7 @@ function App() {
             setNeighborhood={setNeighborhood}
             selectNeighborhood={selectNeighborhood}
             searchNeighborhoods={searchNeighborhoods}
-            getCoordinates={getCoordinates}
+            search={search}
           />
         </>
       ) : (
