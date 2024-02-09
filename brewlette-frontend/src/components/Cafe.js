@@ -17,13 +17,17 @@ export default function Cafe({ cafe }) {
   return (
     <>
       <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/2 m-6 p-3 rounded-lg">
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={20}
-          center={center}
-        >
-          <Marker position={center} />
-        </GoogleMap>
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={20}
+            center={center}
+          >
+            <Marker position={center} />
+          </GoogleMap>
+        ) : (
+          <div>Is loading...</div>
+        )}
       </div>
       <div className="flex items-center justify-between w-1/2">
         <div>
