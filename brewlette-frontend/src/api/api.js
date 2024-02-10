@@ -10,7 +10,6 @@ async function getCoordinates(neighborhood) {
     });
     if (res.data.results.length > 0) {
       const location = res.data.results[0].geometry.location;
-      console.log(`${location.lat},${location.lng}`);
       return `${location.lat},${location.lng}`;
     } else {
       return null;
@@ -21,7 +20,6 @@ async function getCoordinates(neighborhood) {
 }
 
 async function getCafes({ neighborhood, coords }) {
-  console.log(neighborhood, coords);
   try {
     const res = await axios.get(`${base_url}/api/google-maps`, {
       params: {
@@ -31,7 +29,6 @@ async function getCafes({ neighborhood, coords }) {
         location: coords,
       },
     });
-    console.log("res", res.data.results);
     return res.data.results;
   } catch (e) {
     console.error("error :(", e);

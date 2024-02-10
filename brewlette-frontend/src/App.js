@@ -6,6 +6,7 @@ import { getCoordinates, getCafes, getCafeDetails } from "./api/api";
 import "./App.css";
 import { neighborhoods } from "./neighborhoods";
 import React, { useState, useEffect, useRef } from "react";
+import shuffle from "./helpers/helpers";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState("");
@@ -21,13 +22,12 @@ function App() {
       const fetchData = async () => {
         try {
           const cs = await getCafes({ neighborhood, coords });
-          console.log("cafes:", cs);
-          setCafes(cs);
+          const shuffled = shuffle(cs);
+          setCafes(shuffled);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       };
-      console.log("coordinates changed");
       fetchData();
       return;
     }
@@ -44,10 +44,7 @@ function App() {
           console.error("Error fetching data:", error);
         }
       };
-      // Check if it's not the initial load
-      console.log(count);
       fetchData();
-      return;
     }
   }, [cafes]);
 
@@ -55,11 +52,13 @@ function App() {
   useEffect(() => {
     if (count > 0) {
       const fetchData = async () => {
-        console.log("getting cafe deets....");
-        const c = await getCafeDetails(cafes[count].place_id);
-        setCafe(c);
+        try {
+          const c = await getCafeDetails(cafes[count].place_id);
+          setCafe(c);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       };
-      console.log(count);
       fetchData();
     }
   }, [count]);
