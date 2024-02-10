@@ -10,7 +10,6 @@ import shuffle from "./helpers/helpers";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState("");
-  const [filteredNeighborhoods, setFilteredNeighborhoods] = useState([]);
   const [count, setCount] = useState(0);
   const [coords, setCoords] = useState("");
   const [cafes, setCafes] = useState([]);
@@ -63,23 +62,6 @@ function App() {
     }
   }, [count]);
 
-  function searchNeighborhoods(e) {
-    if (e.target.value === "") {
-      setFilteredNeighborhoods([]);
-      return;
-    }
-    const inputValue = e.target.value.toLowerCase();
-    const filtered = neighborhoods.filter((n) =>
-      n.toLowerCase().includes(inputValue)
-    );
-    setFilteredNeighborhoods(filtered);
-  }
-
-  function selectNeighborhood(e) {
-    setNeighborhood(e.target.innerHTML);
-    setFilteredNeighborhoods([]);
-  }
-
   async function search(neighborhood) {
     const coords = await getCoordinates(neighborhood);
     setCoords(coords);
@@ -98,10 +80,7 @@ function App() {
         <>
           <Search
             neighborhood={neighborhood}
-            filteredNeighborhoods={filteredNeighborhoods}
             setNeighborhood={setNeighborhood}
-            selectNeighborhood={selectNeighborhood}
-            searchNeighborhoods={searchNeighborhoods}
             search={search}
           />
         </>
