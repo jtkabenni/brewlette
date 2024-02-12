@@ -7,10 +7,6 @@ const api = process.env.GOOGLE_API;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Hello, this is your Node.js server!");
-});
-
 app.get("/api/coordinates", async (req, res) => {
   const { address } = req.query;
   try {
