@@ -27,7 +27,6 @@ function App() {
         }
       };
       fetchData();
-      return;
     }
   }, [coords]);
 
