@@ -7,42 +7,30 @@ const api = process.env.GOOGLE_API;
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/coordinates", async (req, res) => {
+app.get("/api/cafes", async (req, res) => {
   const { address } = req.query;
   try {
-    const apiUrl = "https://maps.googleapis.com/maps/api/geocode/json";
-    const response = await axios.get(apiUrl, {
+    const getCoordsApiUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+    const responseNeighborhood = await axios.get(getCoordsApiUrl, {
       params: {
         address: address,
         key: api,
       },
     });
-
-    return res.json(response.data);
-  } catch (e) {
-    console.error(e);
-  }
-});
-
-app.get("/api/google-maps", async (req, res) => {
-  const { type, radius, location } = req.query;
-  try {
-    const apiUrl =
+    const coords = `${responseNeighborhood.data.results[0].geometry.location.lat}, ${responseNeighborhood.data.results[0].geometry.location.lng}`;
+    const getCafesApiUrl =
       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-    const response = await axios.get(apiUrl, {
+    const responseCafes = await axios.get(getCafesApiUrl, {
       params: {
         key: api,
-        type: type,
-        radius: radius,
-        location: location,
+        type: "cafe",
+        radius: 1000,
+        location: coords,
       },
     });
-
-    return res.json(response.data);
-    // return res.json(response);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.json(responseCafes.data.results);
+  } catch (e) {
+    console.error(e);
   }
 });
 

@@ -3,34 +3,16 @@ import Logo from "./components/Logo";
 import CafeMenu from "./components/CafeMenu";
 import Search from "./components/Search";
 import BrewletteApi from "./api/api";
-import "./App.css";
 import React, { useState, useEffect, useRef } from "react";
 import shuffle from "./helpers/helpers";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState("");
   const [cafeIndex, setCafeIndex] = useState(0);
-  const [coords, setCoords] = useState("");
   const [cafes, setCafes] = useState([]);
   const [cafe, setCafe] = useState(null);
 
-  //when coordinates change, fetch cafes, and get details for first cafe
-  useEffect(() => {
-    if (coords != "") {
-      const fetchData = async () => {
-        try {
-          const cs = await BrewletteApi.getCafes(coords);
-          const shuffled = shuffle(cs);
-          setCafes(shuffled);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    }
-  }, [coords]);
-
-  //every time cafes change, fetch the details for first cafe on the list
+  //every time cafes change, fetch the details for first cafe in the cafes list
   useEffect(() => {
     if (cafes.length > 0) {
       const fetchData = async () => {
@@ -64,13 +46,14 @@ function App() {
     }
   }, [cafeIndex]);
 
+  // get cafes from API based on user input
   async function search(neighborhood) {
-    const coords = await BrewletteApi.getCoordinates(neighborhood);
-    setCoords(coords);
+    const cafes = await BrewletteApi.getCafes(neighborhood);
+    setCafes(shuffle(cafes));
   }
 
   function restart() {
-    setCoords("");
+    setCafeIndex(0);
     setCafe(null);
     setNeighborhood("");
   }

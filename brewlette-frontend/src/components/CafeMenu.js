@@ -1,5 +1,5 @@
-import home from "../home.png";
-import replay from "../replay.png";
+import home from "../assets/home.png";
+import replay from "../assets/replay.png";
 
 export default function CafeMenu({ restart, setCafeIndex, cafeIndex }) {
   return (
