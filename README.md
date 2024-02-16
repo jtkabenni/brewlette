@@ -25,7 +25,9 @@ This app uses the [Google Maps Places API](https://developers.google.com/maps/do
 
 ## Deployment
 
-_Coming soon!_
+**Note**: Currently deployed on the free version of Render so initial load may take some time.
+
+Deployed at [brewlette.onrender.com](https://brewlette.onrender.com/)
 
 ## Stack Used
 
