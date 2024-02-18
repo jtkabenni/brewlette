@@ -3,7 +3,7 @@ import replay from "../assets/replay.png";
 
 export default function CafeMenu({ restart, setCafeIndex, cafeIndex }) {
   return (
-    <div className="flex items-center justify-between w-1/2">
+    <div className="flex items-center justify-between w:4/5 lg:w-1/2">
       <button
         className="bg-white p-3 rounded-lg font-luckiest"
         onClick={restart}

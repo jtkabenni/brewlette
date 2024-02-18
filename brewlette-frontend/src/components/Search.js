@@ -19,7 +19,7 @@ function Search({ neighborhood, setNeighborhood, selectNeighborhood, search }) {
     setFilteredNeighborhoods(filtered);
   }
   return (
-    <div className="flex flex-col justify-center  items-center bg-cream w-1/2 h-1/2 m-6 p-6 rounded-lg">
+    <div className="flex flex-col justify-center  items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-6 rounded-lg">
       <h2 className="text-purple text-2xl font-luckiest">
         WHICH NYC NEIGHBORHOOD?
       </h2>
