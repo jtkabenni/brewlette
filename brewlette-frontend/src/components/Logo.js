@@ -1,5 +1,5 @@
 import logo from "../assets/logo.png";
 
 export default function Logo() {
-  return <img src={logo} style={{ width: "200px" }} />;
+  return <img src={logo} className="w-36 lg:w-48" />;
 }

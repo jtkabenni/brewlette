@@ -16,7 +16,7 @@ export default function Cafe({ cafe }) {
   });
   return (
     <>
-      <div className="flex flex-col justify-center  items-center bg-cream w:4/5 lg:w-1/2 h-1/2 m-6 p-3 rounded-lg">
+      <div className="flex flex-col justify-center items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-3 rounded-lg">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
@@ -29,7 +29,7 @@ export default function Cafe({ cafe }) {
           <div>Is loading...</div>
         )}
       </div>
-      <div className="flex items-center justify-between w-1/2">
+      <div className="flex items-center justify-between w-4/5 lg:w-1/2">
         <div>
           <p>{cafe.name}</p>
           <p>{cafe.vicinity}</p>
