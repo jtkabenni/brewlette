@@ -7,10 +7,12 @@ import React, { useState, useEffect, useRef } from "react";
 import shuffle from "./helpers/helpers";
 
 function App() {
+  console.log("rendering....");
   const [neighborhood, setNeighborhood] = useState("");
   const [cafeIndex, setCafeIndex] = useState(0);
   const [cafes, setCafes] = useState([]);
   const [cafe, setCafe] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   //every time cafes change, fetch the details for first cafe in the cafes list
   useEffect(() => {
@@ -26,6 +28,7 @@ function App() {
         }
       };
       fetchData();
+      setIsLoading(false);
     }
   }, [cafes]);
 
@@ -48,6 +51,7 @@ function App() {
 
   // get cafes from API based on user input
   async function search(neighborhood) {
+    setIsLoading(true);
     const cafes = await BrewletteApi.getCafes(neighborhood);
     setCafes(shuffle(cafes));
   }
@@ -61,22 +65,27 @@ function App() {
   return (
     <div className="bg-peach h-screen flex flex-col justify-center items-center">
       <Logo />
-      {!cafe ? (
-        <>
-          <Search
-            neighborhood={neighborhood}
-            setNeighborhood={setNeighborhood}
-            search={search}
-          />
-        </>
+
+      {isLoading ? (
+        <div>Fetching cafes...</div>
       ) : (
         <>
-          <CafeMenu
-            restart={restart}
-            setCafeIndex={setCafeIndex}
-            cafeIndex={cafeIndex}
-          />
-          <Cafe cafe={cafe} />
+          {!cafe ? (
+            <Search
+              neighborhood={neighborhood}
+              setNeighborhood={setNeighborhood}
+              search={search}
+            />
+          ) : (
+            <>
+              <CafeMenu
+                restart={restart}
+                setCafeIndex={setCafeIndex}
+                cafeIndex={cafeIndex}
+              />
+              <Cafe cafe={cafe} />
+            </>
+          )}
         </>
       )}
     </div>

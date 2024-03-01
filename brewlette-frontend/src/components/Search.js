@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { neighborhoods } from "../neighborhoods";
 function Search({ neighborhood, setNeighborhood, selectNeighborhood, search }) {
-  const [filteredNeighborhoods, setFilteredNeighborhoods] = useState([]);
+  const filteredNeighborhoodsRef = useRef([]);
 
   function selectNeighborhood(e) {
     setNeighborhood(e.target.innerHTML);
-    setFilteredNeighborhoods([]);
+    filteredNeighborhoodsRef.current = [];
   }
+
   function searchNeighborhoods(e) {
     if (e.target.value === "") {
-      setFilteredNeighborhoods([]);
+      filteredNeighborhoodsRef.current = [];
       return;
     }
     const inputValue = e.target.value.toLowerCase();
     const filtered = neighborhoods.filter((n) =>
       n.toLowerCase().includes(inputValue)
     );
-    setFilteredNeighborhoods(filtered);
+    filteredNeighborhoodsRef.current = filtered;
   }
   return (
     <div className="flex flex-col justify-center  items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-6 rounded-lg">
@@ -38,7 +39,7 @@ function Search({ neighborhood, setNeighborhood, selectNeighborhood, search }) {
           placeholder="Type neighborhood name"
           value={neighborhood}
         ></input>
-        {filteredNeighborhoods.slice(0, 3).map((n, i) => (
+        {filteredNeighborhoodsRef.current.slice(0, 3).map((n, i) => (
           <p
             className="text-lg text-purple font-luckiest bg-white p-3 w-100 rounded-lg "
             key={i}

@@ -26,7 +26,7 @@ export default function Cafe({ cafe }) {
             <Marker position={center} />
           </GoogleMap>
         ) : (
-          <div>Is loading...</div>
+          <div>Loading map...</div>
         )}
       </div>
       <div className="flex items-center justify-between w-4/5 lg:w-1/2">
