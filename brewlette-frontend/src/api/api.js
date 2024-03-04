@@ -9,23 +9,9 @@ class BrewletteApi {
           address: `${neighborhood}, NY`,
         },
       });
-
       return res.data;
     } catch (error) {
       console.error("error :(", error);
-    }
-  }
-
-  static async getCafeDetails(placeid) {
-    try {
-      const res = await axios.get(`${base_url}/api/cafe`, {
-        params: {
-          place_id: placeid,
-        },
-      });
-      return res.data.result;
-    } catch (e) {
-      console.error("error :(", e);
     }
   }
 }

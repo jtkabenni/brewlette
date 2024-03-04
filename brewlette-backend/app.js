@@ -7,45 +7,60 @@ const api = process.env.GOOGLE_API;
 app.use(cors());
 app.use(express.json());
 
-app.get("/api/cafes", async (req, res) => {
-  const { address } = req.query;
-  try {
-    const getCoordsApiUrl = "https://maps.googleapis.com/maps/api/geocode/json";
-    const responseNeighborhood = await axios.get(getCoordsApiUrl, {
+async function getCoordinates(address) {
+  const responseNeighborhood = await axios.get(
+    "https://maps.googleapis.com/maps/api/geocode/json",
+    {
       params: {
         address: address,
         key: api,
       },
-    });
-    const coords = `${responseNeighborhood.data.results[0].geometry.location.lat}, ${responseNeighborhood.data.results[0].geometry.location.lng}`;
-    const getCafesApiUrl =
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-    const responseCafes = await axios.get(getCafesApiUrl, {
+    }
+  );
+  return `${responseNeighborhood.data.results[0].geometry.location.lat}, ${responseNeighborhood.data.results[0].geometry.location.lng}`;
+}
+
+async function getCafes(coordinates) {
+  const getCafesApiUrl =
+    "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+  const responseCafes = await axios.get(getCafesApiUrl, {
+    params: {
+      key: api,
+      type: "cafe",
+      radius: 1000,
+      location: coordinates,
+    },
+  });
+  return responseCafes;
+}
+
+async function getAllCafeDetails(cafes) {
+  const cafeDetailsApiUrl =
+    "https://maps.googleapis.com/maps/api/place/details/json";
+  const cafesDetails = [];
+  for (let r of cafes.data.results) {
+    const cafeResponse = await axios.get(cafeDetailsApiUrl, {
       params: {
         key: api,
-        type: "cafe",
-        radius: 1000,
-        location: coords,
+        place_id: r.place_id,
       },
     });
-    return res.json(responseCafes.data.results);
-  } catch (e) {
-    console.error(e);
+    cafesDetails.push(cafeResponse.data.result);
   }
-});
+  return cafesDetails;
+}
 
-app.get("/api/cafe", async (req, res) => {
+app.get("/api/cafes", async (req, res) => {
   try {
-    const apiUrl = "https://maps.googleapis.com/maps/api/place/details/json";
-    const response = await axios.get(apiUrl, {
-      params: {
-        key: api,
-        place_id: req.query.place_id,
-      },
-    });
+    const { address } = req.query;
 
-    return res.json(response.data);
-    // return res.json(response);
+    const location = await getCoordinates(address);
+
+    const cafes = await getCafes(location);
+
+    const allCafeDetails = await getAllCafeDetails(cafes);
+
+    return res.json(allCafeDetails);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

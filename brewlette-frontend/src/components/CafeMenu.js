@@ -13,7 +13,7 @@ export default function CafeMenu({ restart, setCafeIndex, cafeIndex }) {
       <h2 className="text-purple text-2xl font-luckiest">Result</h2>
       <button
         className="bg-purple p-3 rounded-lg w-12 h-12 font-luckiest"
-        onClick={() => setCafeIndex(cafeIndex + 1)}
+        onClick={() => setCafeIndex(cafeIndex === 19 ? 0 : cafeIndex + 1)}
       >
         <img src={replay} />
       </button>

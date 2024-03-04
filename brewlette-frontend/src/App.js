@@ -11,66 +11,30 @@ function App() {
   const [neighborhood, setNeighborhood] = useState("");
   const [cafeIndex, setCafeIndex] = useState(0);
   const [cafes, setCafes] = useState([]);
-  const [cafe, setCafe] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  //every time cafes change, fetch the details for first cafe in the cafes list
-  useEffect(() => {
-    if (cafes.length > 0) {
-      const fetchData = async () => {
-        try {
-          const c = await BrewletteApi.getCafeDetails(
-            cafes[cafeIndex].place_id
-          );
-          setCafe(c);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-      setIsLoading(false);
-    }
-  }, [cafes]);
-
-  // every time cafeIndex changes, fetch cafe details for cafe of current cafeIndex
-  useEffect(() => {
-    if (cafeIndex > 0) {
-      const fetchData = async () => {
-        try {
-          const c = await BrewletteApi.getCafeDetails(
-            cafes[cafeIndex].place_id
-          );
-          setCafe(c);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      fetchData();
-    }
-  }, [cafeIndex]);
 
   // get cafes from API based on user input
   async function search(neighborhood) {
     setIsLoading(true);
     const cafes = await BrewletteApi.getCafes(neighborhood);
     setCafes(shuffle(cafes));
+    setIsLoading(false);
   }
 
   function restart() {
     setCafeIndex(0);
-    setCafe(null);
+    setCafes([]);
     setNeighborhood("");
   }
 
   return (
     <div className="bg-peach h-screen flex flex-col justify-center items-center">
       <Logo />
-
       {isLoading ? (
         <div>Fetching cafes...</div>
       ) : (
         <>
-          {!cafe ? (
+          {!cafes.length ? (
             <Search
               neighborhood={neighborhood}
               setNeighborhood={setNeighborhood}
@@ -83,7 +47,7 @@ function App() {
                 setCafeIndex={setCafeIndex}
                 cafeIndex={cafeIndex}
               />
-              <Cafe cafe={cafe} />
+              <Cafe cafe={cafes[cafeIndex]} />
             </>
           )}
         </>
