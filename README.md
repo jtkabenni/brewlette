@@ -2,6 +2,17 @@
 
 Brewlette was born from a discussion amongst friends of the decision paralysis that comes from finding and choosing a cafe to work from in New York City. The app currently allows you to select a neighborhood, and a random cafe in that neighborhood will be chosen for you.
 
+## Deployment
+
+Deployed at [brewlette.onrender.com](https://brewlette.onrender.com/)
+
+## Stack Used
+
+- React.js
+- Node.js
+- Express.js
+- Tailwind
+
 ## Design
 
 Brewlette was created in collaboration with amysit94@gmail.com, who designed and branded the app Design files found here:
@@ -22,19 +33,6 @@ This app uses the [Google Maps Places API](https://developers.google.com/maps/do
   - ![Result Page](./demo/result.png)
 - Refresh to find new random cafe
 - Return to home page to start new search
-
-## Deployment
-
-**Note**: Currently deployed on the free version of Render so initial load may take some time.
-
-Deployed at [brewlette.onrender.com](https://brewlette.onrender.com/)
-
-## Stack Used
-
-- React.js
-- Node.js
-- Express.js
-- Tailwind
 
 ## Contact
 
