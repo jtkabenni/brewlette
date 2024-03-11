@@ -1,14 +1,24 @@
-import React, { useRef } from "react";
+import React, { useRef, ChangeEvent, MouseEvent } from "react";
 import { neighborhoods } from "../neighborhoods";
-function Search({ neighborhood, setNeighborhood, selectNeighborhood, search }) {
-  const filteredNeighborhoodsRef = useRef([]);
 
-  function selectNeighborhood(e) {
-    setNeighborhood(e.target.innerHTML);
+interface SearchProps {
+  neighborhood: string;
+  setNeighborhood: React.Dispatch<React.SetStateAction<string>>;
+
+  search: (neighborhood: string) => void;
+}
+
+function Search({ neighborhood, setNeighborhood, search }: SearchProps) {
+  const filteredNeighborhoodsRef = useRef<string[]>([]);
+
+  function selectNeighborhood(e: MouseEvent<HTMLParagraphElement>): void {
+    setNeighborhood(
+      (e.currentTarget as HTMLParagraphElement).textContent || ""
+    );
     filteredNeighborhoodsRef.current = [];
   }
 
-  function searchNeighborhoods(e) {
+  function searchNeighborhoods(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.value === "") {
       filteredNeighborhoodsRef.current = [];
       return;

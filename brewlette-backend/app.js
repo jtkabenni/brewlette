@@ -45,7 +45,13 @@ async function getAllCafeDetails(cafes) {
         place_id: r.place_id,
       },
     });
-    cafesDetails.push(cafeResponse.data.result);
+    const cafe = {
+      location: cafeResponse.data.result.geometry.location,
+      name: cafeResponse.data.result.name,
+      vicinity: cafeResponse.data.result.vicinity,
+      url: cafeResponse.data.result.url,
+    };
+    cafesDetails.push(cafe);
   }
   return cafesDetails;
 }

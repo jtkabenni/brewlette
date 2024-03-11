@@ -6,15 +6,24 @@ import BrewletteApi from "./api/api";
 import React, { useState, useEffect, useRef } from "react";
 import shuffle from "./helpers/helpers";
 
+interface Cafe {
+  location: {
+    lat: number;
+    lng: number;
+  };
+  name: string;
+  vicinity: string;
+  url: string;
+}
+
 function App() {
-  console.log("rendering....");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [cafeIndex, setCafeIndex] = useState(0);
-  const [cafes, setCafes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [neighborhood, setNeighborhood] = useState<string>("");
+  const [cafeIndex, setCafeIndex] = useState<number>(0);
+  const [cafes, setCafes] = useState<Cafe[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // get cafes from API based on user input
-  async function search(neighborhood) {
+  async function search(neighborhood: string) {
     setIsLoading(true);
     const cafes = await BrewletteApi.getCafes(neighborhood);
     setCafes(shuffle(cafes));

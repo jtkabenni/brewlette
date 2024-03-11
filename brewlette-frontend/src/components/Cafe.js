@@ -1,4 +1,5 @@
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+
 export default function Cafe({ cafe }) {
   const libraries = ["places"];
   const mapContainerStyle = {
@@ -7,8 +8,8 @@ export default function Cafe({ cafe }) {
   };
 
   const center = {
-    lat: cafe.geometry.location.lat || 7.2905715, // default latitude
-    lng: cafe.geometry.location.lng || 80.6337262, // default longitude
+    lat: cafe.location.lat || 7.2905715, // default latitude
+    lng: cafe.location.lng || 80.6337262, // default longitude
   };
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API,
