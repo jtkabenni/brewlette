@@ -1,7 +1,17 @@
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import React from "react";
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  Libraries,
+} from "@react-google-maps/api";
+import { CafeInterface } from "../interfaces/cafe";
 
-export default function Cafe({ cafe }) {
-  const libraries = ["places"];
+interface CafeProps {
+  cafe: CafeInterface;
+}
+export default function Cafe({ cafe }: CafeProps) {
+  const libraries: Libraries = ["places"];
   const mapContainerStyle = {
     width: "100%",
     height: "100%",

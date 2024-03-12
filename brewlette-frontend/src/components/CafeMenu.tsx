@@ -1,7 +1,17 @@
+import React from "react";
 import home from "../assets/home.png";
 import replay from "../assets/replay.png";
 
-export default function CafeMenu({ restart, setCafeIndex, cafeIndex }) {
+interface CafeMenuProps {
+  restart: () => void;
+  setCafeIndex: React.Dispatch<React.SetStateAction<number>>;
+  cafeIndex: number;
+}
+export default function CafeMenu({
+  restart,
+  setCafeIndex,
+  cafeIndex,
+}: CafeMenuProps) {
   return (
     <div className="flex items-center justify-between w-4/5 lg:w-1/2">
       <button

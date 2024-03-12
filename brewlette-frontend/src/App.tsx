@@ -3,23 +3,14 @@ import Logo from "./components/Logo";
 import CafeMenu from "./components/CafeMenu";
 import Search from "./components/Search";
 import BrewletteApi from "./api/api";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import shuffle from "./helpers/helpers";
-
-interface Cafe {
-  location: {
-    lat: number;
-    lng: number;
-  };
-  name: string;
-  vicinity: string;
-  url: string;
-}
+import { CafeInterface } from "./interfaces/cafe";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState<string>("");
   const [cafeIndex, setCafeIndex] = useState<number>(0);
-  const [cafes, setCafes] = useState<Cafe[]>([]);
+  const [cafes, setCafes] = useState<CafeInterface[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // get cafes from API based on user input
