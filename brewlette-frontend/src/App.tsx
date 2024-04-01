@@ -6,6 +6,7 @@ import BrewletteApi from "./api/api";
 import React, { useState } from "react";
 import shuffle from "./helpers/helpers";
 import { CafeInterface } from "./interfaces/cafe";
+import loading from "../src/assets/loading.png";
 
 function App() {
   const [neighborhood, setNeighborhood] = useState<string>("");
@@ -29,11 +30,16 @@ function App() {
 
   return (
     <div className="bg-peach h-screen flex flex-col justify-center items-center">
-      <Logo />
       {isLoading ? (
-        <div>Fetching cafes...</div>
+        <div className="flex flex-col justify-center  items-center">
+          <img src={loading} className="w-36 lg:w-48" />
+          <h2 className="text-purple text-2xl font-luckiest">
+            Randomizing Your Brew...
+          </h2>
+        </div>
       ) : (
         <>
+          <Logo />
           {!cafes.length ? (
             <Search
               neighborhood={neighborhood}

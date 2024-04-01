@@ -30,7 +30,7 @@ function Search({ neighborhood, setNeighborhood, search }: SearchProps) {
     filteredNeighborhoodsRef.current = filtered;
   }
   return (
-    <div className="flex flex-col justify-center  items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-6 rounded-lg">
+    <div className="flex flex-col justify-center  items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-6 rounded-3xl">
       <h2 className="text-purple text-2xl font-luckiest">
         WHICH NYC NEIGHBORHOOD?
       </h2>
@@ -38,9 +38,9 @@ function Search({ neighborhood, setNeighborhood, search }: SearchProps) {
               <input type="checkbox" id="no-preference" name="no-preference" />
               <label htmlFor="no-preference">I have no preference</label>
             </div> */}
-      <div className="m-3">
+      <div className="m-3 w-1/2">
         <input
-          className="p-3  w-100"
+          className="p-3  w-full"
           onChange={(e) => {
             setNeighborhood(e.target.value);
             searchNeighborhoods(e);
@@ -51,7 +51,7 @@ function Search({ neighborhood, setNeighborhood, search }: SearchProps) {
         ></input>
         {filteredNeighborhoodsRef.current.slice(0, 3).map((n, i) => (
           <p
-            className="text-lg text-purple font-luckiest bg-white p-3 w-100 rounded-lg "
+            className="text-lg text-purple font-luckiest bg-white p-3 w-100 rounded-md "
             key={i}
             onClick={(e) => selectNeighborhood(e)}
           >
@@ -60,7 +60,7 @@ function Search({ neighborhood, setNeighborhood, search }: SearchProps) {
         ))}
       </div>
       <button
-        className="bg-purple p-3 text-2xl text-white rounded-lg font-luckiest"
+        className="bg-purple p-3 text-2xl text-white rounded-3xl font-luckiest"
         onClick={() => search(neighborhood)}
       >
         FIND A CAFE!

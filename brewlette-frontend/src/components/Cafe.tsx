@@ -27,7 +27,7 @@ export default function Cafe({ cafe }: CafeProps) {
   });
   return (
     <>
-      <div className="flex flex-col justify-center items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-3 rounded-lg">
+      <div className="flex flex-col justify-center items-center bg-cream w-4/5 lg:w-1/2 h-1/2 m-6 p-3 rounded-3xl">
         {isLoaded ? (
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
@@ -45,7 +45,7 @@ export default function Cafe({ cafe }: CafeProps) {
           <p>{cafe.name}</p>
           <p>{cafe.vicinity}</p>
         </div>
-        <button className="bg-purple font-white p-3 rounded-lg font-luckiest">
+        <button className="bg-purple text-white p-3 rounded-3xl font-luckiest">
           <a href={cafe.url} target="_blank">
             Let's go!
           </a>
